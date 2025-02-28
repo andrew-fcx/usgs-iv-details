@@ -23,16 +23,15 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        go: ['1.23']
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v5
       with:
-        go-version: ${{ matrix.go }}
+        go-version: '1.23'
 
     - name: Build
       run: |
