@@ -31,6 +31,7 @@ type USGSResponse struct {
 
 func inspectUSGSSitePayload(siteID string) error {
     url := fmt.Sprintf("https://waterservices.usgs.gov/nwis/iv/?format=json&site=%s", siteID)
+	fmt.Println("Getting timeseries data order from endpoint:", url, "\n")
     
     resp, err := http.Get(url)
     if err != nil {
