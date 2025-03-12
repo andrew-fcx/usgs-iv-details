@@ -29,8 +29,13 @@ type USGSResponse struct {
     } `json:"value"`
 }
 
-func inspectUSGSSitePayload(siteID string) error {
-    url := fmt.Sprintf("https://waterservices.usgs.gov/nwis/iv/?format=json&site=%s", siteID)
+func inspectUSGSSitePayload(siteID, paramIDs string) error {
+    var url string
+    if paramIDs == "" {
+        url = fmt.Sprintf("https://waterservices.usgs.gov/nwis/iv/?format=json&site=%s", siteID)
+    } else {
+        url = fmt.Sprintf("https://waterservices.usgs.gov/nwis/iv/?format=json&site=%s&vars=%s", siteID, paramIDs)
+    }
 	fmt.Println("Getting timeseries data order from endpoint:", url, "\n")
     
     resp, err := http.Get(url)
@@ -68,9 +73,10 @@ func inspectUSGSSitePayload(siteID string) error {
 
 func main() {
 	siteId := flag.String("site", "", "USGS site ID")
+    paramIDs := flag.String("params", "", "USGS param IDs (comma separated list)")
 	flag.Parse()
 
-    if err := inspectUSGSSitePayload(*siteId); err != nil {
+    if err := inspectUSGSSitePayload(*siteId, *paramIDs); err != nil {
         fmt.Printf("Error: %v\n", err)
     }
 }
